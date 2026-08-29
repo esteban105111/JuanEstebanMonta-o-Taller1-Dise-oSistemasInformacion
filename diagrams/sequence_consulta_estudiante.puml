@@ -1,0 +1,25 @@
+@startuml
+title NOTASYA - Consulta de estudiante por correo
+
+actor Cliente
+participant "EstudianteController" as Controller
+participant "EstudianteService" as Service
+participant "EstudianteRepository" as Repository
+database "PostgreSQL" as DB
+
+Cliente -> Controller: GET /estudiantes/{correo}
+Controller -> Service: obtener_estudiante_por_correo(correo)
+Service -> Repository: obtener_por_correo(correo)
+Repository -> DB: SELECT * FROM estudiantes WHERE correo = ?
+DB --> Repository: estudiante | null
+Repository --> Service: estudiante | null
+alt encontrado
+  Service --> Controller: Estudiante
+  Controller --> Cliente: 200 EstudianteResponseDTO
+else no encontrado
+  Service --> Controller: HTTPException 404
+  Controller --> Cliente: 404 Estudiante no encontrado
+end
+
+@enduml
+

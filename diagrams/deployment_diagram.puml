@@ -1,0 +1,26 @@
+@startuml
+title NOTASYA - Diagrama de despliegue
+
+node "Cliente Web / Swagger" as Client {
+  artifact "Navegador"
+}
+
+node "Servidor API" as ApiServer {
+  artifact "FastAPI app"
+  artifact "Uvicorn"
+  artifact "SQLAlchemy"
+}
+
+database "PostgreSQL" as Postgres {
+  artifact "Base de datos notasya"
+}
+
+cloud "Railway o entorno local" as Platform
+
+Client --> ApiServer: HTTP/JSON
+ApiServer --> Postgres: Conexion DATABASE_URL
+Platform .. ApiServer
+Platform .. Postgres
+
+@enduml
+

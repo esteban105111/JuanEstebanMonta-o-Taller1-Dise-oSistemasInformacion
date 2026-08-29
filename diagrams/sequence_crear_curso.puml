@@ -1,0 +1,38 @@
+@startuml
+title NOTASYA - Creacion de curso con validaciones
+
+actor Cliente
+participant "CursoController" as Controller
+participant "CursoService" as Service
+participant "EstudianteRepository" as EstudianteRepo
+participant "ProfesorRepository" as ProfesorRepo
+participant "CursoRepository" as CursoRepo
+database "PostgreSQL" as DB
+
+Cliente -> Controller: POST /cursos CursoCreateDTO
+Controller -> Service: crear_curso(dto)
+Service -> EstudianteRepo: obtener_por_id(dto.estudiante_id)
+EstudianteRepo -> DB: SELECT estudiante
+DB --> EstudianteRepo: estudiante | null
+alt estudiante no existe
+  Service --> Controller: HTTPException 404
+  Controller --> Cliente: 404 Estudiante no existe
+else estudiante existe
+  Service -> ProfesorRepo: obtener_por_id(dto.profesor_id)
+  ProfesorRepo -> DB: SELECT profesor
+  DB --> ProfesorRepo: profesor | null
+  alt profesor no existe
+    Service --> Controller: HTTPException 404
+    Controller --> Cliente: 404 Profesor no existe
+  else profesor existe
+    Service -> CursoRepo: crear(curso)
+    CursoRepo -> DB: INSERT INTO cursos
+    DB --> CursoRepo: curso creado
+    CursoRepo --> Service: Curso
+    Service --> Controller: Curso
+    Controller --> Cliente: 201 CursoResponseDTO
+  end
+end
+
+@enduml
+

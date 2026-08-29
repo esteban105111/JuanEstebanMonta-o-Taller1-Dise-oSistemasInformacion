@@ -1,0 +1,81 @@
+@startuml
+title NOTASYA - Diagrama de clases
+
+class Estudiante {
+  +id: int
+  +nombre: str
+  +telefono: str
+  +correo: str
+}
+
+class Profesor {
+  +id: int
+  +nombre: str
+  +tipo_identificacion: str
+  +numero_identificacion: str
+  +especialidad: str
+}
+
+class Curso {
+  +id: int
+  +nombre: str
+  +estudiante_id: int
+  +profesor_id: int
+  +calificacion: Decimal
+}
+
+class EstudianteController {
+  +ObtenerTodosLosEstudiantes()
+  +ObtenerEstudiantePorCorreo(correo)
+  +CrearEstudiante(dto)
+  +ActualizarEstudiante(id, dto)
+}
+
+class EstudianteService {
+  +obtener_todos_los_estudiantes()
+  +obtener_estudiante_por_correo(correo)
+  +crear_estudiante(dto)
+  +actualizar_estudiante(id, dto)
+}
+
+class EstudianteRepository {
+  +obtener_todos()
+  +obtener_por_id(id)
+  +obtener_por_correo(correo)
+  +crear(estudiante)
+  +actualizar(estudiante, datos)
+}
+
+class ProfesorController
+class ProfesorService
+class ProfesorRepository
+class CursoController
+class CursoService
+class CursoRepository
+
+class ServiceFactory <<Factory Method>>
+class DatabaseConnection <<Singleton>>
+class EmailAdapter <<Adapter>>
+class EvaluadorCalificacion <<Strategy>>
+
+Estudiante "1" <-- "0..*" Curso
+Profesor "1" <-- "0..*" Curso
+
+EstudianteController --> EstudianteService
+EstudianteService --> EstudianteRepository
+ProfesorController --> ProfesorService
+ProfesorService --> ProfesorRepository
+CursoController --> CursoService
+CursoService --> CursoRepository
+CursoService --> EstudianteRepository
+CursoService --> ProfesorRepository
+
+ServiceFactory ..> EstudianteService
+ServiceFactory ..> ProfesorService
+ServiceFactory ..> CursoService
+DatabaseConnection ..> EstudianteRepository
+EmailAdapter ..> EstudianteService
+EvaluadorCalificacion ..> CursoService
+
+@enduml
+
