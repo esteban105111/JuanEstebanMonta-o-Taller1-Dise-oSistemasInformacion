@@ -485,6 +485,138 @@ Resultado esperado:
 9 passed
 ```
 
+## Despliegue en Vercel
+
+Vercel puede desplegar aplicaciones FastAPI usando su runtime de Python. Para que Vercel detecte la aplicacion, el proyecto incluye el archivo `index.py` en la raiz:
+
+```python
+from app.main import app
+```
+
+Ese archivo expone la instancia `app` de FastAPI que realmente vive en `app/main.py`.
+
+Tambien se incluye `.python-version` para indicar la version de Python usada en el despliegue:
+
+```text
+3.14
+```
+
+Y se incluye `vercel.json` para excluir archivos que no son necesarios en produccion:
+
+```json
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "index.py": {
+      "excludeFiles": "{app/tests/**,diagrams/**,.venv/**,.pytest_cache/**,**/__pycache__/**}"
+    }
+  }
+}
+```
+
+### Importante sobre PostgreSQL en Vercel
+
+En Vercel no se puede usar esta URL en produccion:
+
+```env
+DATABASE_URL=postgresql+psycopg://postgres:TU_PASSWORD@localhost:5432/notasya
+```
+
+`localhost` solo funciona en tu computador. Cuando la API este desplegada en Vercel, `localhost` apunta al servidor temporal de Vercel, no a tu PostgreSQL local.
+
+Para produccion necesitas una base de datos PostgreSQL en la nube, por ejemplo:
+
+- Neon
+- Supabase
+- Railway PostgreSQL
+- Render PostgreSQL
+- Otro proveedor PostgreSQL externo
+
+La variable `DATABASE_URL` en Vercel debe tener una URL parecida a esta:
+
+```env
+DATABASE_URL=postgresql+psycopg://USUARIO:PASSWORD@HOST:5432/NOMBRE_DB
+```
+
+### Opcion 1: desplegar desde GitHub
+
+1. Entra a Vercel: `https://vercel.com`.
+2. Inicia sesion con GitHub.
+3. Clic en `Add New...` y luego `Project`.
+4. Importa el repositorio:
+
+```text
+JuanEstebanMonta-o-Taller1-Dise-oSistemasInformacion
+```
+
+5. En la configuracion del proyecto, agrega la variable de entorno:
+
+```text
+DATABASE_URL
+```
+
+Con la URL de tu PostgreSQL en la nube.
+
+6. No configures `Build Command` ni `Output Directory`; Vercel detecta FastAPI automaticamente.
+7. Clic en `Deploy`.
+8. Cuando termine, prueba:
+
+```text
+https://TU-PROYECTO.vercel.app/health
+https://TU-PROYECTO.vercel.app/docs
+```
+
+### Opcion 2: desplegar con Vercel CLI
+
+Instalar Vercel CLI:
+
+```powershell
+npm install -g vercel
+```
+
+Iniciar sesion:
+
+```powershell
+vercel login
+```
+
+Desplegar desde la carpeta del proyecto:
+
+```powershell
+vercel
+```
+
+Para produccion:
+
+```powershell
+vercel --prod
+```
+
+Agregar la variable de entorno desde CLI:
+
+```powershell
+vercel env add DATABASE_URL
+```
+
+Despues de agregar variables de entorno, vuelve a desplegar:
+
+```powershell
+vercel --prod
+```
+
+### Migraciones en produccion
+
+Antes de usar los endpoints en Vercel, la base de datos en la nube debe tener las tablas creadas.
+
+Desde tu computador puedes ejecutar Alembic apuntando temporalmente a la base de datos remota:
+
+```powershell
+$env:DATABASE_URL="postgresql+psycopg://USUARIO:PASSWORD@HOST:5432/NOMBRE_DB"
+.venv\Scripts\python -m alembic upgrade head
+```
+
+Despues de eso, la API desplegada podra usar las tablas `estudiantes`, `profesores` y `cursos`.
+
 ## Despliegue sugerido en Railway
 
 1. Crear un proyecto en Railway.
