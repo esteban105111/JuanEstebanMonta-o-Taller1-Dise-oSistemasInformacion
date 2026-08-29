@@ -25,6 +25,17 @@ class Settings(BaseSettings):
             return "development"
         return str(value)
 
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_database_url(cls, value: str | None) -> str:
+        if value is None or str(value).strip() == "":
+            return "postgresql+psycopg://postgres:postgres@localhost:5432/notasya"
+
+        database_url = str(value).strip()
+        if database_url.startswith("postgresql://"):
+            return database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+        return database_url
+
 
 @lru_cache
 def get_settings() -> Settings:
