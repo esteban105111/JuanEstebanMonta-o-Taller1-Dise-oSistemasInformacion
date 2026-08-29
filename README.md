@@ -5,7 +5,7 @@ NOTASYA es una API REST para gestionar estudiantes, profesores y cursos. El proy
 ## Datos del proyecto
 
 - Proyecto: NOTASYA
-- Integrante: Juan Esteban Montano
+- Integrante: Juan Esteban Montaño
 - Arquitectura: DTOs -> Controladores -> Servicios -> Repositorios -> PostgreSQL
 - Base de datos: PostgreSQL
 - Documentacion interactiva: Swagger UI en `/docs`
@@ -140,7 +140,6 @@ APP_NAME=NOTASYA API
 APP_ENV=development
 ```
 
-Nota: el archivo `.env` no debe subirse a GitHub porque contiene credenciales.
 
 ## Base de datos PostgreSQL
 
