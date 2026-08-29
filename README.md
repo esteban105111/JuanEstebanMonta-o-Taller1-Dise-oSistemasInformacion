@@ -438,10 +438,31 @@ Ejemplo:
 
 ## Diagramas PlantUML
 
-- Diagrama de clases: `diagrams/class_diagram.puml`
-- Diagrama de secuencia para consulta: `diagrams/sequence_consulta_estudiante.puml`
-- Diagrama de secuencia para creacion: `diagrams/sequence_crear_curso.puml`
-- Diagrama de despliegue: `diagrams/deployment_diagram.puml`
+Los diagramas estan escritos en PlantUML dentro de la carpeta `diagrams/`. En GitHub se muestran como imagenes usando el servidor publico de PlantUML.
+
+### Diagrama de clases
+
+Archivo fuente: `diagrams/class_diagram.puml`
+
+![Diagrama de clases](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/esteban105111/JuanEstebanMonta-o-Taller1-Dise-oSistemasInformacion/main/diagrams/class_diagram.puml)
+
+### Diagrama de secuencia: consulta de estudiante
+
+Archivo fuente: `diagrams/sequence_consulta_estudiante.puml`
+
+![Diagrama de secuencia para consultar estudiante](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/esteban105111/JuanEstebanMonta-o-Taller1-Dise-oSistemasInformacion/main/diagrams/sequence_consulta_estudiante.puml)
+
+### Diagrama de secuencia: creacion de curso
+
+Archivo fuente: `diagrams/sequence_crear_curso.puml`
+
+![Diagrama de secuencia para crear curso](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/esteban105111/JuanEstebanMonta-o-Taller1-Dise-oSistemasInformacion/main/diagrams/sequence_crear_curso.puml)
+
+### Diagrama de despliegue
+
+Archivo fuente: `diagrams/deployment_diagram.puml`
+
+![Diagrama de despliegue](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/esteban105111/JuanEstebanMonta-o-Taller1-Dise-oSistemasInformacion/main/diagrams/deployment_diagram.puml)
 
 ## Pruebas
 
@@ -508,4 +529,3 @@ Ejecutar pruebas:
 ```powershell
 .venv\Scripts\python -m pytest
 ```
-
